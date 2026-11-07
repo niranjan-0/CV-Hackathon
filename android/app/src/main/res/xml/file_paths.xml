@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<paths>
+    <!--
+      Covers  getExternalFilesDir(null)/outputs/
+      This is the folder MainActivity already saves PNGs into.
+      FileProvider turns a File path into a content:// URI that other apps
+      (Gallery, Files, WhatsApp, etc.) can read without needing storage permission.
+    -->
+    <external-files-path
+        name="generated_images"
+        path="outputs/" />
+</paths>

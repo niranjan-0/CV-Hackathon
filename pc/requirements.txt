@@ -1,0 +1,17 @@
+torch>=2.1,<2.9
+diffusers>=0.30
+transformers>=4.40,<5
+peft>=0.11
+accelerate
+safetensors
+onnx>=1.16
+onnxruntime>=1.18
+onnxconverter-common
+numpy
+pillow
+opencv-python
+psutil
+matplotlib
+pandas
+# optional, only for FID:
+# clean-fid

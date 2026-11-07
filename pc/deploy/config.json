@@ -1,0 +1,10 @@
+{
+  "vae_scale": 1.0,
+  "latent_channels": 4,
+  "hidden": 768,
+  "max_len": 77,
+  "bos": 49406,
+  "eos": 49407,
+  "lcm": true,
+  "taesd": true
+}

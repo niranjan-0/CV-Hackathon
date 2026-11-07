@@ -1,0 +1,19 @@
+# Python
+pc/.venv/
+__pycache__/
+*.py[cod]
+
+# Generated models and benchmark results
+pc/deploy/**/*.onnx
+pc/deploy/**/*.onnx.data
+pc/results/
+
+# Android / Gradle
+.gradle/
+**/build/
+local.properties
+*.jks
+*.keystore
+
+# IDE
+.idea/
