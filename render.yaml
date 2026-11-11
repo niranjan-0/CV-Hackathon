@@ -2,6 +2,7 @@ services:
   - type: web
     name: t2i-mobile-pc
     runtime: python
+    plan: free
     rootDir: pc
     buildCommand: pip install -r requirements-render.txt
     startCommand: gunicorn app_server:app --bind 0.0.0.0:$PORT --workers 1 --threads 1 --timeout 600
