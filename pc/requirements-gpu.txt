@@ -1,11 +1,12 @@
-# Install torch FIRST with the CUDA build (see steps), then:
+# Install torch FIRST (see Step 1 below), then install this file.
+# Do NOT install plain onnxruntime — it conflicts with onnxruntime-gpu.
 diffusers>=0.30
 transformers>=4.40,<5
 peft>=0.11
 accelerate
 safetensors
 onnx>=1.16
-onnxruntime-gpu>=1.21   # NOT onnxruntime: the two packages conflict
+onnxruntime-gpu>=1.21
 onnxconverter-common
 numpy
 pillow
@@ -15,3 +16,4 @@ matplotlib
 pandas
 datasets
 clean-fid
+flask

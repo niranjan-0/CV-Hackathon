@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: t2i-mobile-pc
+    runtime: python
+    rootDir: pc
+    buildCommand: pip install -r requirements-render.txt
+    startCommand: gunicorn app_server:app --bind 0.0.0.0:$PORT --workers 1 --threads 1 --timeout 600
+    healthCheckPath: /healthz
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.11
+      - key: T2I_DEPLOY_DIR
+        value: deploy
+      - key: T2I_VARIANT
+        value: fp16
+      - key: T2I_ORT_DEVICE
+        value: cpu

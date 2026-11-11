@@ -1,0 +1,7 @@
+Flask>=3.0,<4
+gunicorn>=22.0,<24
+numpy>=1.26,<2
+onnxruntime>=1.18,<2
+Pillow>=10,<13
+psutil>=5.9,<8
+transformers>=4.40,<5

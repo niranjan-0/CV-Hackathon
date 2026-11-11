@@ -12,9 +12,26 @@ none are claimed here.
 
 ## 1. PC / Colab (needs internet, ~16 GB RAM for the UNet export)
 
+For CPU-only execution, install `requirements.txt`. For NVIDIA CUDA execution on Windows,
+use a clean virtual environment and install the matching CUDA PyTorch build and GPU ONNX Runtime;
+do not install both `onnxruntime` and `onnxruntime-gpu` in the same environment:
+
+```powershell
+cd pc
+python -m pip uninstall -y onnxruntime onnxruntime-gpu
+python -m pip install torch==2.6.0 --index-url https://download.pytorch.org/whl/cu124
+python -m pip install -r requirements-gpu.txt
+python -c "import torch, onnxruntime as ort; print(torch.cuda.is_available(), ort.get_available_providers())"
+```
+
+The provider check should list `CUDAExecutionProvider` and PyTorch should report `True`. If not,
+use `--ort-device cpu` or verify the NVIDIA driver.
+
 ```bash
 cd pc
+# CPU-only setup; skip this install command if using the CUDA setup above.
 pip install -r requirements.txt
+# After installing the CPU or CUDA requirements, export and quantize:
 python 01_export_onnx.py --out deploy --taesd      # LCM-LoRA fused, tiny VAE; creates deploy/fp32
 python 02_quantize.py --deploy deploy              # creates deploy/fp16 and deploy/int8, prints sizes
 python 02_quantize.py --deploy deploy --int8-conv  # optional: also quantize Conv (smaller; may be slower on ARM)
@@ -30,6 +47,19 @@ Optimization strategies demonstrated: (1) step reduction via LCM distillation (L
 down to 4 steps, no CFG, so about 12x fewer UNet evaluations), (2) FP16 and INT8 quantization, (3) TAESD
 latent-space/lightweight decoder, (4) resolution scaling (256/384/512) plus Lanczos upscale.
 Adaptive part: `BudgetPlanner.kt`.
+
+## Deploy the PC website to Render
+
+Create a Render Blueprint from this repository and deploy `render.yaml` at the repository root.
+The service installs only the CPU inference dependencies and starts the Flask app with Gunicorn.
+The website and `/healthz` are available without loading the model.
+
+ONNX model binaries are excluded from Git, so generation will return HTTP 503 until Render can
+read a complete model folder. Upload the exported `pc/deploy` folder (including the selected
+variant's `.onnx` and `.onnx.data` files) to a Render persistent disk, then set
+`T2I_DEPLOY_DIR` to that folder's absolute mount path and `T2I_VARIANT` to `fp16`, `fp32`, or
+`int8` in the service environment. The instance must have enough memory for the selected model;
+CPU generation may also take several minutes.
 
 ## 2. Phone
 
